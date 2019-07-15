@@ -1,7 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.github.dcendents.android-maven'
-group='com.github.abhishekklizos'
+//group='com.github.abhishekklizos'
 
 android {
     compileSdkVersion 29
