@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.SignUpStepOneActivity">
+
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@color/transparent"
+            android:focusable="true"
+            android:focusableInTouchMode="true">
+
+            <cyman.libssid.util.CustomTextInputLayout
+                android:id="@+id/first_name_textInput_layout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+
+                android:layout_gravity="center_horizontal"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/textinput_bottom_line"
+                android:foregroundGravity="center"
+                android:gravity="center"
+                android:inputType="textCapSentences"
+                android:textSize="14sp"
+                android:textColorHint="@color/black_input_hint"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <EditText
+                    android:id="@+id/email_edittext"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="15dp"
+                    android:background="@null"
+                    android:hint="@string/email"
+                    android:singleLine="true"
+                    android:lines="1"
+                    android:textStyle="bold"
+                    android:inputType="textEmailAddress|textNoSuggestions"
+                    android:paddingTop="15dp"
+                    android:imeOptions="actionNext"
+                    android:textColor="@color/black_input_value"
+                    android:textSize="15sp" />
+            </cyman.libssid.util.CustomTextInputLayout>
+
+
+            <com.hbb20.CountryCodePicker
+                android:id="@+id/country_code_picker"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="15dp"
+                app:layout_constraintEnd_toEndOf="@+id/first_name_textInput_layout"
+                app:layout_constraintStart_toStartOf="@+id/first_name_textInput_layout"
+                app:layout_constraintTop_toBottomOf="@+id/first_name_textInput_layout" />
+
+            <cyman.libssid.util.CustomTextInputLayout
+                android:id="@+id/middle_name_textInput_layout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+
+                android:layout_gravity="center_horizontal"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/textinput_bottom_line"
+                android:foregroundGravity="center"
+                android:gravity="center"
+                android:inputType="textCapSentences"
+                android:textSize="14sp"
+                android:textColorHint="@color/black_input_hint"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/country_code_picker">
+
+                <EditText
+                    android:id="@+id/phone_edittext"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="15dp"
+                    android:background="@null"
+                    android:hint="@string/phone_number"
+                    android:inputType="phone"
+                    android:paddingTop="15dp"
+                    android:singleLine="true"
+                    android:lines="1"
+                    android:textStyle="bold"
+                    android:digits="0123456789"
+                    android:maxLength="10"
+                    android:imeOptions="actionNext"
+                    android:textColor="@color/black_input_value"
+                    android:textSize="15sp" />
+            </cyman.libssid.util.CustomTextInputLayout>
+
+
+            <cyman.libssid.util.CustomTextInputLayout
+                android:id="@+id/last_name_textInput_layout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:visibility="gone"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/textinput_bottom_line"
+                android:foregroundGravity="center"
+                android:gravity="center"
+                android:textColorHint="@color/black_input_hint"
+                android:inputType="textCapSentences"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/middle_name_textInput_layout">
+
+                <EditText
+                    android:id="@+id/component_id_edittext"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="15dp"
+                    android:background="@null"
+                    android:hint="@string/component_issued_id"
+                    android:paddingTop="15dp"
+                    android:singleLine="true"
+                    android:lines="1"
+                    android:inputType="textNoSuggestions"
+                    android:imeOptions="actionNext"
+                    android:textColor="@color/black_input_value"
+                    android:textSize="15sp" />
+            </cyman.libssid.util.CustomTextInputLayout>
+
+
+
+            <TextView
+                android:id="@+id/tv_login"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="35dp"
+                android:layout_marginTop="50dp"
+                android:background="@drawable/btn_background_oval"
+                android:elevation="5dp"
+                android:ems="6"
+                android:gravity="center"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
+                android:text="@string/next"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/last_name_textInput_layout" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </ScrollView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

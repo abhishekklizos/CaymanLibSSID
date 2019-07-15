@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+
+    <color name="green_modified">#2599A7</color>
+    <color name="gray">#7e7e7e</color>
+    <color name="dark_gray">#696969</color>
+    <color name="gray59">#969696</color>
+    <color name="gray89">#e3e3e3</color>
+    <color name="graydeep">#6a6a75</color>
+    <color name="colorGray">#808080</color>
+    <color name="gray95">#f2f2f2</color>
+    <color name="light_gray">#dbdbdb</color>
+    <color name="semi_gray">#979797</color>
+
+    <color name="grey_white">#FAFAFA</color>
+
+    <color name="colorline">#d4d4d4</color>
+    <color name="modified_blue_1">#535376</color>
+    <color name="modified_green_1">#1C918A</color>
+    <color name="colorWhite">#ffffff</color>
+
+    <color name="colorsplashtext">#646487</color>
+    <color name="colorsplashtextdark">#535375</color>
+
+    <color name="black_overlay">#66ffffff</color>
+    <!--<color name="colorgreen">#78bd44</color>-->
+    <color name="red">#FF0000</color>
+    <color name="colorBlack">#000000</color>
+    <color name="chambray">#565678</color>
+    <color name="darkgrey">#9191a3</color>
+    <color name="orange">#ff8800</color>
+    <color name="actionbar_opacity">#33000000</color>
+
+    <color name="round_corner_progress_bar_background_default">#5f5f5f</color>
+    <color name="round_corner_progress_bar_progress_default">#7f7f7f</color>
+    <color name="round_corner_progress_bar_secondary_progress_default">@android:color/transparent
+    </color>
+
+
+    <bool name="default_circle_indicator_centered">true</bool>
+    <color name="default_circle_indicator_fill_color">#FFFFFFFF</color>
+    <color name="default_circle_indicator_page_color">#00000000</color>
+    <integer name="default_circle_indicator_orientation">0</integer>
+    <dimen name="default_circle_indicator_radius">0.5dp</dimen>
+    <bool name="default_circle_indicator_snap">false</bool>
+    <color name="default_circle_indicator_stroke_color">#FFDDDDDD</color>
+    <dimen name="default_circle_indicator_stroke_width">1dp</dimen>
+
+    <dimen name="default_line_indicator_line_width">12dp</dimen>
+    <dimen name="default_line_indicator_gap_width">4dp</dimen>
+    <dimen name="default_line_indicator_stroke_width">1dp</dimen>
+    <color name="default_line_indicator_selected_color">#FF33B5E5</color>
+    <color name="default_line_indicator_unselected_color">#FFBBBBBB</color>
+    <bool name="default_line_indicator_centered">true</bool>
+
+    <dimen name="default_title_indicator_clip_padding">4dp</dimen>
+    <color name="default_title_indicator_footer_color">#FF33B5E5</color>
+    <dimen name="default_title_indicator_footer_line_height">2dp</dimen>
+    <integer name="default_title_indicator_footer_indicator_style">2</integer>
+    <dimen name="default_title_indicator_footer_indicator_height">4dp</dimen>
+    <dimen name="default_title_indicator_footer_indicator_underline_padding">20dp</dimen>
+    <dimen name="default_title_indicator_footer_padding">7dp</dimen>
+    <integer name="default_title_indicator_line_position">0</integer>
+    <color name="default_title_indicator_selected_color">#FFFFFFFF</color>
+    <bool name="default_title_indicator_selected_bold">true</bool>
+    <color name="default_title_indicator_text_color">#BBFFFFFF</color>
+    <dimen name="default_title_indicator_text_size">15dp</dimen>
+    <dimen name="default_title_indicator_title_padding">5dp</dimen>
+    <dimen name="default_title_indicator_top_padding">7dp</dimen>
+
+    <bool name="default_underline_indicator_fades">true</bool>
+    <integer name="default_underline_indicator_fade_delay">300</integer>
+    <integer name="default_underline_indicator_fade_length">400</integer>
+    <color name="default_underline_indicator_selected_color">#FF33B5E5</color>
+    <color name="strongarcticblue">#239ba6</color>
+    <color name="starFullySelected">#ffd500</color>
+    <color name="darkpurple">#565678</color>
+
+    <color name="blue_glossy_type">#2721f9</color>
+    <color name="light_white">#F9F9F9</color>
+    <color name="bg_color">#f7f7f7</color>
+    <color name="black">#000000</color>
+    <color name="white">#ffffff</color>
+    <color name="light_black">#222a2a2a</color>
+    <color name="black_effective">#2a2a2a</color>
+    <color name="shadow">#d0d8dc</color>
+    <color name="transparent">#00000000</color>
+    <color name="translucent_white">#88ffffff</color>
+    <color name="fb">#3b5998</color>
+    <color name="google">#d34836</color>
+
+    <!--Design colors-->
+    <color name="red_dark">#F06423</color>
+    <color name="red_dark2">#D85A1B</color>
+    <color name="cyan_light">#c9ebee</color>
+    <color name="cyan">#b5e3e7</color>
+    <color name="cyan_dark">#70BDC6</color>
+    <color name="navy_blue">#214258</color>
+    <color name="blue_modified_1">#034889</color>
+    <color name="blue_modified_1_alpha">#33034889</color>
+    <color name="blue_modified_2_alpha">#22034889</color>
+    <color name="navy_blue_dark">#1C3A4E</color>
+    <color name="light_green">#78DC96</color>
+    <color name="green">#49AC8A</color>
+    <color name="light_blue">#55C8F0</color>
+    <color name="blue_black_dark">#13171d</color>
+    <color name="blue_black_light">#516179</color>
+    <color name="blue_grey_light">#A5B4C8</color>
+    <!--<color name="orange">#FFA500</color>-->
+    <color name="yellow">#fff44f</color>
+
+
+    <color name="violet">#7E239E</color>
+    <color name="red_modified">#ff2e3f</color>
+    <color name="gre_modified">#2effc7</color>
+    <color name="offwhite">#F2F2F2</color>
+    <color name="transparentWhite">#EEffffff</color>
+    <color name="transparentWhite_lite">#4Affffff</color>
+    <color name="transparentWhite_lite_2">#BAffffff</color>
+    <color name="cart_count_background">#5C5C5C</color>
+    <color name="full_transparent">#00ffffff</color>
+    <color name="ratingBarColor">#FAC917</color>
+    <color name="transparentBlack">#66000000</color>
+
+    <color name="color_greentext">#8CC63F</color>
+    <color name="off_white">#F9F9F9</color>
+
+    <color name="black_input_value">#4E4E4E</color>
+    <color name="black_input_hint">#808080</color>
+
+    <color name="verified_green">#0D5702</color>
+    <color name="green_tick_mark">#6AC259</color>
+
+    <!-- PinEntryEditText -->
+
+    <color name="pin_normal">#6B767E</color>
+
+
+</resources>
+
+

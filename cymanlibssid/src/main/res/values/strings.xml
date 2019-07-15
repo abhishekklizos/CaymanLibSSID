@@ -1,0 +1,186 @@
+<resources>
+    <string name="app_name">caymanssidlib</string>
+
+    <!--play store-->
+    <string name="app_google_play_store_link">"https://play.google.com/store/apps/details?id="</string>
+    <string name="app_market_link">"market://details?id="</string>
+
+
+    <string name="scan_to_deliver_this_product">Scan To Deliver This Product</string>
+    <string name="scan">Scan</string>
+    <string name="delivery_address">Delivery Address</string>
+    <string name="order_number">Order Number</string>
+    <string name="miles_away">Miles Away</string>
+    <string name="minutes">Minutes</string>
+    <string name="cancel">Cancel</string>
+    <string name="accept">Accept</string>
+    <string name="picked_up_for_delivery">Product is Picked Up for Delivery</string>
+    <string name="order_number_matched">Order Matched Successfully</string>
+    <string name="please_press_delivery_button">Please Press Delivery Button</string>
+    <string name="delivered">Delivered</string>
+    <string name="scan_customer_id">Scan Customer Id</string>
+    <string name="jobs">Jobs</string>
+    <string name="start">Start</string>
+    <string name="close">Close</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="login">Log In</string>
+    <string name="forgot_password">Forgot Password</string>
+    <string name="dont_have_account">Don\'t have an account?</string>
+    <string name="signup">Sign Up</string>
+    <string name="invalid_email">Email Is Invalid</string>
+    <string name="first_name">First Name</string>
+    <string name="middle_name">Middle Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="dob">Date Of Birth</string>
+    <string name="next">Next</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="component_issued_id">Component Issued ID</string>
+    <string name="address_1">Address 1</string>
+    <string name="field_cant_be_blank">Field Can\'t be Blank</string>
+    <string name="invalid_phone">Invalid Phone Number</string>
+    <string name="city">City</string>
+    <string name="state">State</string>
+    <string name="country">Country</string>
+    <string name="zipcode">Zipcode</string>
+    <string name="address2">Address2</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="submit">Submit</string>
+    <string name="profile_completion">Profile Completion</string>
+    <string name="home">Home</string>
+    <string name="profile">Profile</string>
+    <string name="setting">Settings</string>
+    <string name="title_activity_profile">ProfileActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="invalid_password">Password must be 6\-20 size and contains 1 upper case, 1 lower case, 1 number and 1 special character</string>
+    <string name="password_dont_match">Password Don\'t Match</string>
+    <string name="zipcode_invalid">Zipcode Is Invalid</string>
+    <string name="no_city_selected">Please Select Your City</string>
+    <string name="no_state_selected">Please Select Your State</string>
+    <string name="no_country_selected">Please Select Your Country</string>
+    <string name="address">Address</string>
+    <string name="logout">Log Out</string>
+
+
+    <string name="verification_failed">Verification Failed</string>
+    <string name="otp_sent_to_ph">OTP has been sent to your mobile</string>
+    <string name="enter_otp">Please Enter OTP</string>
+    <string name="resend_otp">Resend OTP</string>
+    <string name="phone_notvalid">Mobile Number is Not Valid</string>
+    <string name="phone_required">Mobile Number is Required</string>
+    <string name="otp_required">OTP Required</string>
+    <string name="pleaseenterphonenumber">Please Enter Mobile Number</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="are_you_sure_to_logout">Do you want to Log out?</string>
+    <string name="change_password">Change Password</string>
+    <string name="email_can_not_be_blank">Email can not be blank</string>
+    <string name="phone_can_not_be_blank">Phone can not be blank</string>
+    <string name="firstname_can_not_be_blank">First name can not be blank</string>
+    <string name="lastname_can_not_be_blank">Last name can be blank</string>
+    <string name="dob_can_not_be_blank">Date of birth can not be blank</string>
+    <string name="address_can_not_be_blank">Address can not be blank</string>
+    <string name="zipcode_can_not_be_blank">Zipcode can not be blank</string>
+    <string name="password_can_not_be_blank">Password can not be blank</string>
+    <string name="create_new_password">Create New Password</string>
+    <string name="old_password">Old Password</string>
+    <string name="new_password">New Password</string>
+    <string name="show_password">Show Password</string>
+    <string name="please_type_correct_password">Please enter correct password</string>
+    <string name="enter_different_password">Already used, use different password</string>
+    <string name="scan_qr">Scan QR</string>
+    <string name="generate_qr">Generate QR</string>
+    <string name="qr_code">QR Code</string>
+    <string name="send">Send</string>
+    <string name="scan_again">Please Scan Again Properly</string>
+    <string name="you_are_not_verified">You are not verified yet by admin</string>
+    <string name="check_internet">Check Internet Connection</string>
+    <string name="no_data">No Data</string>
+    <string name="pending_requests_title">Pending Requests</string>
+    <string name="verified">Verified</string>
+    <string name="wallet_name">Wallet Name</string>
+    <string name="did_id">DID Id</string>
+    <string name="accepted">Accepted</string>
+    <string name="rejected">Rejected</string>
+    <string name="accepted_requests_title">Accepted Requests</string>
+    <string name="show_two_dimensional_code">Please show your two dimensional code</string>
+    <string name="certificate_request">Certificate Requirement List</string>
+    <string name="email_already_exists">Email already exists</string>
+    <string name="data_requirement">Data Requirement</string>
+    <string name="required_data">Required Data:-  </string>
+    <string name="half_sentence_for_request_certificate_data_sender_title">requests you following data:</string>
+    <string name="connected_request">Connected Accounts</string>
+    <string name="pending_request">Pending Requests</string>
+    <string name="connected_users">Connected Users</string>
+    <string name="connected_user_details">Connected User Details</string>
+    <string name="no_history_found">No History Found</string>
+    <string name="connected_user_history">Connected User History</string>
+    <string name="use_fingerprint_to_go_next">Use your fingerprint to open app</string>
+    <string name="device_is_secure">Your device is now secure</string>
+    <string name="unlock">SSID Unlock</string>
+    <string name="confirm_pattern">Confirm pattern or password</string>
+    <string name="please_set_pattern_pin_from_settings">Please set a pattern or pin lock or fingerprint from phone setting</string>
+    <string name="auth_fail">Authentication Failed Closing App</string>
+    <string name="pending_data_request">Pending Data List</string>
+    <string name="submitted_data_request">Submitted Data List</string>
+    <string name="rejected_data_request">Rejected Data List</string>
+    <string name="sent_data">Sent Data:-</string>
+    <string name="enter_code">Code mentioned in email</string>
+    <string name="please_enter_4_digit_code">Please enter four digit code which has been sent to your email</string>
+    <string name="please_check_code_try_again">Please check the code and try again</string>
+    <string name="wrong_code">Please check the code and try again</string>
+    <string name="code_cant_be_blank">Code can\'t be blank</string>
+    <string name="resend_code">Resend Code</string>
+    <string name="code_is_sent_to_email">Code has been sent to email</string>
+    <string name="scan_passport_mzr">Scan Passport Code</string>
+    <string name="title_mrz">MRZ</string>
+    <string name="feedback_shaky">hold still</string>
+    <string name="feedback_too_bright">too bright</string>
+    <string name="feedback_too_dark">too dark</string>
+    <string name="feedback_perfect">perfect</string>
+    <string name="male">M</string>
+    <string name="female">F</string>
+    <string name="transgender">T</string>
+    <string name="cannot_be_blank">Can not be blank</string>
+    <string name="request_received">Received Request</string>
+    <string name="request_sent">Sent Request</string>
+
+
+    <!--<string name="base_host">149.28.93.35</string>-->
+    <!--<string name="base_host_dynamic">%1$s.ssid.ky</string>-->
+
+    <!-- Manifest usage -->
+    <!--<string name="base_host">develop.ssid.ky</string>-->
+
+    <!--Commented string above is declared in gradle dynamically-->
+    <string name="base_schema">http</string>
+    <string name="base_schema_secures">https</string>
+    <string name="base_pathprefix_signup">/apis/signup</string>
+    <string name="base_pathprefix_signin">/apis/signin</string>
+    <!-- End -->
+    <string name="ssid_signin">SSID User Login</string>
+    <!--<string name="asset_statements" translatable="false">[{ \"include\": \"http://develop.ssid.ky/.well-known/assetlinks.json" }]</string>-->
+    <!--<string name="asset_statements" translatable="false">[{ \"include\": \"http://149.28.93.35/.well-known/assetlinks.json" }]</string>-->
+    <string name="invaild_code">Invalid Code</string>
+
+
+    <!-- Face Recognition -->
+    <string name="endpoint">https://westcentralus.api.cognitive.microsoft.com/face/v1.0</string>
+    <string name="subscription_key">73fc0f419f4a44ddb900d3ba4563e08c</string>
+    <string name="no_network">No internet available, connect to internet first</string>
+    <string name="poor_network">Network connection is poor, try again after some time</string>
+
+
+    <!-- Google Map SDK api key (Adam's Account)-->
+    <!--<string name="google_map_api_key">AIzaSyCQR94Una2hXuAwJFWk7dDq-hrSOHHev2I</string>-->
+    <string name="google_map_api_key">AIzaSyDo0DHEtyj5J1jC84phvpe_WOuTZ3cYb9M</string>
+    <!--<string name="google_map_api_key">AIzaSyBXDTYmT3TCjuhL2qfP9lfcw_0oMD7ZfGw</string>-->
+    <!--<string name="google_map_api_key">AIzaSyC9fLj0CMD46J68DwsTPvZ28dfZQ-mupxE</string>-->
+
+
+    <string name="verify_email">Verify Email</string>
+    <string name="patern_text">Pattern of your Phone is not set,first set the Pattern of your Phone.</string>
+    <string name="ssidlogin">SSID LOGIN</string>
+</resources>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="cyman.libssid">
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <application>
+        <activity android:name=".activity.SignUpStepTwoActivity"
+            android:screenOrientation="portrait"
+            ></activity>
+        <activity android:name=".activity.SignUpStepOneActivity"
+            android:screenOrientation="portrait"
+            />
+        <activity android:name=".activity.AutoLoginActivity"
+            android:screenOrientation="portrait"
+            />
+        <activity android:name=".activity.SignUpActivity"
+            android:screenOrientation="portrait"
+            />
+        <activity android:name=".activity.LoginActivity"
+            android:screenOrientation="portrait"
+            />
+    </application>
+
+</manifest>
