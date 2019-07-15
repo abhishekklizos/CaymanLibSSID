@@ -53,10 +53,12 @@ public class SignUpStepOneActivity extends AppCompatActivity {
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(SignUpStepOneActivity.this,SignUpStepTwoActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT);
-                startActivity(intent);
-                finish();
+//                Intent intent = new Intent(SignUpStepOneActivity.this,SignUpStepTwoActivity.class);
+//                intent.setFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT);
+//                startActivity(intent);
+//                finish();
+
+                nextFragment();
             }
         });
 
