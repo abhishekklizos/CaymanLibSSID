@@ -33,7 +33,7 @@ android {
             buildConfigField "String", 'SSID_BASE_URL', "\"https://develop.ssid.ky/api/\""
         }
         release {
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             buildConfigField("String", "BASE_URL", "\"http://www.mocky.io/v2\"")
             buildConfigField("String", "API_KEY", "\"ABCXYZ123TEST\"")
