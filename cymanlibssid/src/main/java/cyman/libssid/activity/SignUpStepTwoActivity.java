@@ -44,6 +44,7 @@ public class SignUpStepTwoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up_step_two);
 
+
         TextView textView=(TextView)findViewById(R.id.tv_login);
 
         confirmPasswordTextInputLayout=(CustomTextInputLayout)findViewById(R.id.confirm_password_textInput_layout);
