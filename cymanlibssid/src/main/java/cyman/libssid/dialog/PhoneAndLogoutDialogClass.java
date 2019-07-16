@@ -31,6 +31,7 @@ import com.google.firebase.auth.PhoneAuthProvider;
 import java.util.concurrent.TimeUnit;
 
 import cyman.libssid.R;
+import cyman.libssid.activity.SignUpStepOneActivity;
 import cyman.libssid.activity.SignUpStepTwoActivity;
 import cyman.libssid.util.AppConstants;
 import cyman.libssid.util.PinEntryEditText;
@@ -68,6 +69,7 @@ public class PhoneAndLogoutDialogClass extends Dialog implements View.OnClickLis
         this.dob = dob;
         this.email = email;
         this.component_id = component_id;
+        Log.d("phone","----------"+phone);
     }
 
 
@@ -308,7 +310,11 @@ public class PhoneAndLogoutDialogClass extends Dialog implements View.OnClickLis
     }
 
     private void submitToGoToNext() {
-       activity.startActivity(new Intent(activity, SignUpStepTwoActivity.class));
+//       activity.startActivity(new Intent(activity, SignUpStepTwoActivity.class));
+                Intent intent = new Intent(activity,SignUpStepTwoActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT);
+                activity.startActivity(intent);
+                activity.finish();
         dismiss();
     }
 

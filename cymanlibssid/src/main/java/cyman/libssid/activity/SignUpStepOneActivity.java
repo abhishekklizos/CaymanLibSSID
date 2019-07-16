@@ -33,6 +33,7 @@ public class SignUpStepOneActivity extends AppCompatActivity {
     CustomTextInputLayout middleNameTextInputLayout,firstNameTextInputLayout;
     EditText phoneEdittext,emailEdittext,componentIdEdittext;
     TextView next;
+    CountryCodePicker countryCodePicker;
     String selected_country_code_name = "KY", selected_country_code = "",email,phone,component_id,first_name = "", middle_name = "", last_name = "",dob="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +49,21 @@ public class SignUpStepOneActivity extends AppCompatActivity {
         phoneEdittext=(EditText)findViewById(R.id.phone_edittext) ;
         emailEdittext=(EditText)findViewById(R.id.email_edittext) ;
         componentIdEdittext=(EditText)findViewById(R.id.component_id_edittext) ;
+        countryCodePicker=(CountryCodePicker) findViewById(R.id.country_code_picker) ;
+        countryCodePicker.setCountryForNameCode(selected_country_code_name);
+        countryCodePicker.setAutoDetectedCountry(true);
 
+        selected_country_code_name =countryCodePicker.getSelectedCountryNameCode();
+        selected_country_code =countryCodePicker.getSelectedCountryCodeWithPlus();
+
+
+        countryCodePicker.setOnCountryChangeListener(new CountryCodePicker.OnCountryChangeListener() {
+            @Override
+            public void onCountrySelected() {
+                selected_country_code_name =countryCodePicker.getSelectedCountryNameCode();
+                selected_country_code =countryCodePicker.getSelectedCountryCodeWithPlus();
+            }
+        });
 
         next.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,10 +84,15 @@ public class SignUpStepOneActivity extends AppCompatActivity {
          email = emailEdittext.getText().toString().trim();
          phone = phoneEdittext.getText().toString().trim();
          component_id = componentIdEdittext.getText().toString().trim();
-
+        Log.d("phone","----4-------"+component_id);
         if (NetworkUtils.isNetworkConnected(this)) {
             if (checkValidation(email, phone, component_id)) {
                 phone = selected_country_code + phone;
+
+                Log.d("phone","-1-------------"+phone);
+                Log.d("phone","----2-------"+component_id);
+                Log.d("phone","-3-------------"+phone);
+
 
                 verifyPhoneNumber();
             }
@@ -190,6 +210,9 @@ public class SignUpStepOneActivity extends AppCompatActivity {
 
                         if (status.equals("1")) {
 
+
+                            phone=component_id+" "+phone;
+                            Log.d("phone", ":------ " + phone);
                             new PhoneAndLogoutDialogClass(AppConstants.OTP_INPUT, SignUpStepOneActivity.this, first_name, middle_name, last_name, dob, email, phone, component_id).show();
                         } else {
                             if (message != null) {
