@@ -3,9 +3,20 @@ package cyman.libssid.activity;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.telephony.SmsManager;
+import android.telephony.SubscriptionInfo;
+import android.telephony.SubscriptionManager;
+import android.telephony.TelephonyManager;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
@@ -14,6 +25,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import cyman.libssid.R;
 import cyman.libssid.callbackfunction.onCallBackFunction;
@@ -44,10 +59,16 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
+    @SuppressLint("MissingPermission")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+
+
+
+
         TextView tvSignup=(TextView)findViewById(R.id.tv_signup);
          email_textInput_layout=(CustomTextInputLayout)findViewById(R.id.email_textInput_layout);
          password_textInput_layout=(CustomTextInputLayout)findViewById(R.id.password_textInput_layout);
@@ -77,13 +98,6 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                Log.d("isVarified","----------------"+isVarified());
-                if (isVarified())
-                {
-                    listenerDone.onSuccess("You have been successfully authenticated");
-                    onBackPressed();
-                    finish();
-                }
 
             }
         });

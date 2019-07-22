@@ -1,9 +1,25 @@
 package cyman.libssid.activity;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
+import android.accounts.AccountManager;
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentSender;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -16,6 +32,18 @@ import com.androidnetworking.common.ANRequest;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
+import com.google.android.gms.auth.GoogleAuthUtil;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.credentials.Credential;
+import com.google.android.gms.auth.api.credentials.CredentialPickerConfig;
+import com.google.android.gms.auth.api.credentials.HintRequest;
+import com.google.android.gms.common.AccountPicker;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.hbb20.CountryCodePicker;
 
 import org.json.JSONException;
@@ -28,17 +56,28 @@ import cyman.libssid.util.CommonUtils;
 import cyman.libssid.util.CustomTextInputLayout;
 import cyman.libssid.util.NetworkUtils;
 
-public class SignUpStepOneActivity extends AppCompatActivity {
+public class SignUpStepOneActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener{
 
-    CustomTextInputLayout middleNameTextInputLayout,firstNameTextInputLayout;
-    EditText phoneEdittext,emailEdittext,componentIdEdittext;
+    CustomTextInputLayout middleNameTextInputLayout, firstNameTextInputLayout;
+    EditText phoneEdittext, emailEdittext, componentIdEdittext;
     TextView next;
     CountryCodePicker countryCodePicker;
-    String selected_country_code_name = "KY", selected_country_code = "",email,phone,component_id,first_name = "", middle_name = "", last_name = "",dob="";
+    String selected_country_code_name = "KY", selected_country_code = "", email, phone, component_id, first_name = "", middle_name = "", last_name = "", dob = "";
+    private GoogleApiClient mCredentialsApiClient;
+    private static final int RC_HINT = 1000;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up_step_one);
+
+
+//        startActivity(new Intent(this,PhoneNumberActivity.class));
+
+        mCredentialsApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .enableAutoManage(this, this)
+                .addApi(Auth.CREDENTIALS_API)
+                .build();
 
 
         firstNameTextInputLayout=(CustomTextInputLayout)findViewById(R.id.first_name_textInput_layout) ;
@@ -65,6 +104,22 @@ public class SignUpStepOneActivity extends AppCompatActivity {
             }
         });
 
+        phoneEdittext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                showHint();
+            }
+        });
+
+        emailEdittext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent googlePicker = AccountPicker.newChooseAccountIntent(null, null, new String[]{GoogleAuthUtil.GOOGLE_ACCOUNT_TYPE}, true, null, null, null, null);
+                startActivityForResult(googlePicker, 123);
+            }
+        });
+
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -77,6 +132,15 @@ public class SignUpStepOneActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+
+
+
+    private String getMyPhoneNO() {
+        TelephonyManager tMgr = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+        @SuppressLint("MissingPermission") String mPhoneNumber = tMgr.getLine1Number();
+        return mPhoneNumber;
     }
 
     private void nextFragment() {
@@ -237,4 +301,87 @@ public class SignUpStepOneActivity extends AppCompatActivity {
     }
 
 
+
+    private void showHint() {
+//        ui.clearKeyboard();
+        HintRequest hintRequest = new HintRequest.Builder()
+                .setHintPickerConfig(new CredentialPickerConfig.Builder()
+                        .setShowCancelButton(true)
+                        .build())
+                .setPhoneNumberIdentifierSupported(true)
+                .build();
+
+        PendingIntent intent =
+                Auth.CredentialsApi.getHintPickerIntent(mCredentialsApiClient, hintRequest);
+        try {
+            startIntentSenderForResult(intent.getIntentSender(), RC_HINT, null, 0, 0, 0);
+        } catch (IntentSender.SendIntentException e) {
+            Log.e("Abhi", "Could not start hint picker Intent", e);
+        }
+    }
+
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+        Log.d("Abhi", "Connected");
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+        Log.d("Abhi", "GoogleApiClient is suspended with cause code: " + i);
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        Log.d("Abhi", "GoogleApiClient failed to connect: " + connectionResult);
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RC_HINT) {
+            if (resultCode == RESULT_OK) {
+                Credential cred = data.getParcelableExtra(Credential.EXTRA_KEY);
+
+                if (cred.getId().length() > 4)
+                {
+//                    lastFourDigits = cred.getId().substring(cred.getId().length() - 10);
+                    phoneEdittext.setText(cred.getId().substring(cred.getId().length() - 10));
+                }
+                else
+                {
+//                    lastFourDigits = cred.getId();
+                    phoneEdittext.setText(cred.getId());
+                }
+//                phoneEdittext.setText(cred.getId());
+            } else {
+//                ui.focusPhoneNumber();
+            }
+        }
+
+        if (requestCode == 123 && resultCode == RESULT_OK) {
+            String accountName = data.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
+            emailEdittext.setText(""+accountName);
+
+            sendEmailVerification();
+        }
+    }
+
+    public void sendEmailVerification() {
+        // [START send_email_verification]
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        FirebaseUser user = auth.getCurrentUser();
+
+        user.sendEmailVerification()
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Log.d("Abhishek", "Email sent.");
+                        }
+                    }
+                });
+        // [END send_email_verification]
+    }
 }

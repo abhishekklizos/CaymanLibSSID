@@ -72,6 +72,9 @@ dependencies {
     implementation 'com.amitshekhar.android:android-networking:1.0.2'
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'com.hbb20:ccp:2.2.9'
+    implementation 'com.firebaseui:firebase-ui-auth:4.3.1'
+//    implementation 'com.google.android.gms:play-services-auth:17.0.0'
+
 
 
 }
