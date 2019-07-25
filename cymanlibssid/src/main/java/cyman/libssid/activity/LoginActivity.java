@@ -52,7 +52,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public static void LoginManagerConnect(Activity context, String packg, OnLoginClickListenerDone clickListener){
         listenerDone=clickListener;
-        context.startActivity(new Intent(context,LoginActivity.class));
+        context.startActivity(new Intent(context,PhoneLoginActivity.class));
 
     }
 

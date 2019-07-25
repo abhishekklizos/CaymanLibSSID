@@ -6,6 +6,8 @@ public class AppConstants {
 
     public static final String COUNTRY_STATE_CITY_LIST_PART_URL = "Appsettings";
     public static final String MULTIPLE_USAGE_PART_URL = "Wallet";
+    public static final String SOCIAL_USAGE_PART_URL = "Socialapp";
+
     public static final String CONNECTION_SEND_PART_URL = "Connections";
     public static final String CREDENTIAL_DATAREQUEST_PART_URL = "Credential";
     public static final String CREDENTIAL_LICENCE_DATA_SCAN = "Ocr";
@@ -110,6 +112,10 @@ public class AppConstants {
     public static final String KEY_NAME_LOCK_SCREEN = "SSIDSecurity";
 
     public static String THIRED_PARTY_PACKAGE = "";
+
+    public static final String APP_VERIFICATION_MODE = "third-party-package-verification";
+    public static final String APP_REQUEST_MODE = "third-party-connection-request";
+    public static final String APP_REQUEST_ACCEPET_MODE = "third-party-connection-accept";
 
 
     public AppConstants() {

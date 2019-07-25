@@ -31,6 +31,7 @@ import com.google.firebase.auth.PhoneAuthProvider;
 import java.util.concurrent.TimeUnit;
 
 import cyman.libssid.R;
+import cyman.libssid.activity.LoginActivity;
 import cyman.libssid.activity.SignUpStepOneActivity;
 import cyman.libssid.activity.SignUpStepTwoActivity;
 import cyman.libssid.util.AppConstants;
@@ -57,6 +58,23 @@ public class PhoneAndLogoutDialogClass extends Dialog implements View.OnClickLis
 
 
     public PhoneAndLogoutDialogClass(String type, Activity a, String first_name, String middle_name, String last_name,
+                                     String dob, String email, String phone, String component_id,OnLoginVerificationListenerDone onLoginVerificationListener) {
+        super(a);
+        // TODO Auto-generated constructor stub
+        this.type = type;
+        this.activity = a;
+        this.phone = phone;
+        this.first_name = first_name;
+        this.middle_name = middle_name;
+        this.last_name = last_name;
+        this.dob = dob;
+        this.email = email;
+        this.component_id = component_id;
+        this.onLoginVerificationListenerDone=onLoginVerificationListener;
+        Log.d("phone","----------"+phone);
+    }
+
+    public PhoneAndLogoutDialogClass(String type, Activity a, String first_name, String middle_name, String last_name,
                                      String dob, String email, String phone, String component_id) {
         super(a);
         // TODO Auto-generated constructor stub
@@ -69,9 +87,18 @@ public class PhoneAndLogoutDialogClass extends Dialog implements View.OnClickLis
         this.dob = dob;
         this.email = email;
         this.component_id = component_id;
+
         Log.d("phone","----------"+phone);
     }
 
+
+    public interface OnLoginVerificationListenerDone {
+
+        void onSuccess(String sucess);
+        void onError(String error);
+    }
+
+    static OnLoginVerificationListenerDone onLoginVerificationListenerDone;
 
     public PhoneAndLogoutDialogClass(String type, Activity activity) {
         super(activity);
@@ -311,10 +338,13 @@ public class PhoneAndLogoutDialogClass extends Dialog implements View.OnClickLis
 
     private void submitToGoToNext() {
 //       activity.startActivity(new Intent(activity, SignUpStepTwoActivity.class));
-                Intent intent = new Intent(activity,SignUpStepTwoActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT);
-                activity.startActivity(intent);
-                activity.finish();
+//                Intent intent = new Intent(activity,SignUpStepTwoActivity.class);
+//        Intent intent = new Intent(activity,SignUpStepTwoActivity.class);
+////                intent.setFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT);
+////                activity.startActivity(intent);
+////                activity.finish();
+//        FirebaseAuth.getInstance().getCurrentUser().getUid();
+        onLoginVerificationListenerDone.onSuccess(FirebaseAuth.getInstance().getCurrentUser().getUid());
         dismiss();
     }
 
