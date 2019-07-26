@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@android:color/transparent"
+    android:gravity="center">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:orientation="vertical"
+        android:id="@+id/parent_ll"
+        android:padding="15dp">
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentStart="true"
+            android:layout_margin="5dp"
+            android:gravity="center"
+            android:text="4 digit code sent to your email"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <cyman.libssid.util.PinEntryEditText
+            android:id="@+id/edittext_email_verification"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@+id/tv_title"
+            android:layout_centerHorizontal="true"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="10dp"
+            android:maxLength="4"
+            android:gravity="center"
+            android:textSize="18sp"
+            android:digits="1234567890"
+            android:inputType="number"
+            app:pinLineColors="@drawable/pin_line_colors"
+            android:background="@null"
+            android:cursorVisible="false"
+            android:textIsSelectable="false" />
+
+        <TextView
+            android:id="@+id/resend_code_tv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/edittext_email_verification"
+            android:layout_alignStart="@+id/edittext_email_verification"
+            android:layout_below="@+id/edittext_email_verification"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="@string/resend_code"
+            android:textSize="16sp" />
+
+        <cyman.libssid.util.avloaderindicator.AVLoadingIndicatorView
+            android:id="@+id/progressbar"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:visibility="gone"
+            app:indicatorName="BallPulseSyncIndicator"
+            app:indicatorColor="@color/blue_modified_1"
+            android:layout_alignBottom="@+id/edittext_email_verification"
+            android:layout_centerInParent="true"
+            android:layout_alignTop="@+id/edittext_email_verification"
+            android:layout_gravity="center" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/resend_code_tv"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="5dp">
+
+            <TextView
+                android:id="@+id/btn_negative"
+                android:layout_width="0dp"
+                android:layout_height="45dp"
+                android:layout_margin="8dp"
+                android:layout_weight="1"
+                android:background="@drawable/white_btn_background_with_oval_border"
+                android:gravity="center"
+                android:text="@string/cancel"
+                android:elevation="5dp"
+                android:textColor="@color/blue_modified_1"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+
+            <TextView
+                android:id="@+id/btn_positive"
+                android:layout_width="0dp"
+                android:layout_height="45dp"
+                android:layout_margin="8dp"
+                android:layout_weight="1"
+                android:elevation="5dp"
+                android:background="@drawable/btn_background_oval"
+                android:gravity="center"
+                android:text="@string/submit"
+                android:enabled="false"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>
+

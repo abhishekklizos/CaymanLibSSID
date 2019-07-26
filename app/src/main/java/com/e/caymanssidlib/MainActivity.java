@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                LoginActivity.LoginManagerConnect(MainActivity.this,"",onLoginClickListenerDone);
+                LoginActivity.LoginManagerConnect(MainActivity.this,"Dvyaw9pUECWZxg32ASibMsJ6vX8NKFQKH8V572wF4mWTac0dZoLjxgVblPNoJ6zi",onLoginClickListenerDone);
 //                onCallBackFunction.LoginManager(MainActivity.this,"",onLoginClickListener);
 
             }

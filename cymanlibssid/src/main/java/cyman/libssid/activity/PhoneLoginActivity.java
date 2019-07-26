@@ -1,16 +1,12 @@
 package cyman.libssid.activity;
 
 import android.accounts.AccountManager;
-import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.Dialog;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.os.Bundle;
-import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -40,12 +36,14 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.hbb20.CountryCodePicker;
+import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import cyman.libssid.R;
+import cyman.libssid.api.CommonResponse;
+import cyman.libssid.api.Response;
+import cyman.libssid.dialog.EmailVerificationDialog;
 import cyman.libssid.dialog.PhoneAndLogoutDialogClass;
 import cyman.libssid.util.AppConstants;
 import cyman.libssid.util.CommonUtils;
@@ -54,18 +52,22 @@ import cyman.libssid.util.NetworkUtils;
 
 public class PhoneLoginActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener{
 
-    CustomTextInputLayout middleNameTextInputLayout;
-    EditText phoneEdittext, componentIdEdittext;
-    TextView next;
-    CountryCodePicker countryCodePicker;
-    String selected_country_code_name = "KY", selected_country_code = "", phone, component_id, first_name = "", middle_name = "", last_name = "", dob = "";
+    /*Define Layout Attributes*/
+    CustomTextInputLayout email_textInput_layout,phoneno_textInput_layout;
+    EditText email_edittext, phone_edittext;
+    TextView login_click;
+
+
+    /*Define Variable*/
+    String  phone="",email="";
     private GoogleApiClient mCredentialsApiClient;
     private static final int RC_HINT = 1000;
     private ProgressDialog mProgressDialog;
+    Response commonResponse=new Response();
     PhoneAndLogoutDialogClass.OnLoginVerificationListenerDone onLoginClickListenerDone;
-
-    ScrollView scrollView;
+    EmailVerificationDialog.OnEmailVerificationListenerDone onEmailVerificationListenerDone;
     static OnLoginClickListenerDone listenerDone;
+    Boolean isEmailCheck=false;
 
     public interface OnLoginClickListenerDone {
 
@@ -74,21 +76,11 @@ public class PhoneLoginActivity extends AppCompatActivity implements GoogleApiCl
     }
 
 
-    public static void LoginManagerConnect(Activity context, String packg, OnLoginClickListenerDone clickListener){
-        listenerDone=clickListener;
-        context.startActivity(new Intent(context,PhoneLoginActivity.class));
-
-    }
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_phone_login);
-
-
-
-//        startActivity(new Intent(this,PhoneNumberActivity.class));
+        mProgressDialog = CommonUtils.showLoadingDialog(this);
 
         mCredentialsApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
@@ -96,18 +88,42 @@ public class PhoneLoginActivity extends AppCompatActivity implements GoogleApiCl
                 .addApi(Auth.CREDENTIALS_API)
                 .build();
 
-
         onLoginClickListenerDone=new PhoneAndLogoutDialogClass.OnLoginVerificationListenerDone() {
             @Override
             public void onSuccess(String sucess) {
 
-                Log.d("ClickListenerDone","---------------------------------"+sucess);
+                if (isEmailCheck){
 
-                mProgressDialog.show();
-                apprequest(sucess);
+                    mProgressDialog.show();
+                    apprequest(sucess);
+                }
+                else {
+                    mProgressDialog.show();
+                    email_textInput_layout.setVisibility(View.VISIBLE);
+                    showHint("email");
+                }
 
 
+            }
 
+            @Override
+            public void onError(String error) {
+
+
+            }
+        };
+
+
+        onEmailVerificationListenerDone=new EmailVerificationDialog.OnEmailVerificationListenerDone() {
+            @Override
+            public void onSuccess(String sucess) {
+
+
+//                apprequest(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                Intent intent=new Intent();
+                intent.putExtra("MESSAGE",commonResponse);
+                setResult(10,intent);
+                finish();
             }
 
             @Override
@@ -116,103 +132,77 @@ public class PhoneLoginActivity extends AppCompatActivity implements GoogleApiCl
             }
         };
 
+        /*Define Layout*/
 
-//        firstNameTextInputLayout=(CustomTextInputLayout)findViewById(R.id.first_name_textInput_layout) ;
-        middleNameTextInputLayout=(CustomTextInputLayout)findViewById(R.id.middle_name_textInput_layout) ;
-        scrollView=(ScrollView) findViewById(R.id.scrollView) ;
-        next=(TextView)findViewById(R.id.tv_login) ;
-        scrollView.setVisibility(View.INVISIBLE);
+        email_textInput_layout=(CustomTextInputLayout)findViewById(R.id.email_textInput_layout);
+        phoneno_textInput_layout=(CustomTextInputLayout)findViewById(R.id.phoneno_textInput_layout);
 
+        login_click=(TextView)findViewById(R.id.tv_login) ;
 
-        phoneEdittext=(EditText)findViewById(R.id.phone_edittext) ;
-//        emailEdittext=(EditText)findViewById(R.id.email_edittext) ;
-        componentIdEdittext=(EditText)findViewById(R.id.component_id_edittext) ;
-        countryCodePicker=(CountryCodePicker) findViewById(R.id.country_code_picker) ;
-        countryCodePicker.setCountryForNameCode(selected_country_code_name);
-        countryCodePicker.setAutoDetectedCountry(true);
+        email_edittext=(EditText)findViewById(R.id.email_edittext) ;
+        phone_edittext=(EditText)findViewById(R.id.phone_edittext) ;
+        email_textInput_layout.setVisibility(View.GONE);
 
-        selected_country_code_name =countryCodePicker.getSelectedCountryNameCode();
-        selected_country_code =countryCodePicker.getSelectedCountryCodeWithPlus();
+        /*Show Progress for Check App is registered or not*/
 
+         commonResponse=(Response) getIntent().getSerializableExtra("response");
 
-        countryCodePicker.setOnCountryChangeListener(new CountryCodePicker.OnCountryChangeListener() {
-            @Override
-            public void onCountrySelected() {
-                selected_country_code_name =countryCodePicker.getSelectedCountryNameCode();
-                selected_country_code =countryCodePicker.getSelectedCountryCodeWithPlus();
-            }
-        });
+         Log.d("response","------------------------------"+new Gson().toJson(commonResponse));
 
 
-        mProgressDialog = CommonUtils.showLoadingDialog(this);
+
+
         mProgressDialog.show();
-        appregister();
+
+        showHint("phone");
 
 
+        /*Listner for phone*/
 
-        phoneEdittext.setOnClickListener(new View.OnClickListener() {
+        phoneno_textInput_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                showHint();
+                showHint("phone");
             }
         });
 
-//        emailEdittext.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent googlePicker = AccountPicker.newChooseAccountIntent(null, null, new String[]{GoogleAuthUtil.GOOGLE_ACCOUNT_TYPE}, true, null, null, null, null);
-//                startActivityForResult(googlePicker, 123);
-//            }
-//        });
+        /*Listner for mail check*/
 
-        next.setOnClickListener(new View.OnClickListener() {
+        email_textInput_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent intent = new Intent(SignUpStepOneActivity.this,SignUpStepTwoActivity.class);
-//                intent.setFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT);
-//                startActivity(intent);
-//                finish();
+
+                showHint("email");
+
+            }
+        });
+
+        /*Listner For Login*/
+
+        login_click.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
                 nextFragment();
             }
         });
 
 
-
-
     }
 
 
 
 
-    private String getMyPhoneNO() {
-        TelephonyManager tMgr = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-        @SuppressLint("MissingPermission") String mPhoneNumber = tMgr.getLine1Number();
-        return mPhoneNumber;
-    }
 
     private void nextFragment() {
 
-//         email = emailEdittext.getText().toString().trim();
-         phone = phoneEdittext.getText().toString().trim();
-         component_id = componentIdEdittext.getText().toString().trim();
-        Log.d("phone","----4-------"+component_id);
+         email = email_edittext.getText().toString().trim();
+         phone = phone_edittext.getText().toString().trim();
+
         if (NetworkUtils.isNetworkConnected(this)) {
-            if (checkValidation("", phone, component_id)) {
-//                phone = selected_country_code + phone;
+            if (checkValidation("", "")) {
 
-                Log.d("phone","-1-------------"+phone);
-                Log.d("phone","----2-------"+component_id);
-                Log.d("phone","-3-------------"+phone);
-
-
-//                verifyPhoneNumber();
-
-
-//                phone=component_id+" "+phone;
-                Log.d("phone", ":------ " + phone);
-                new PhoneAndLogoutDialogClass(AppConstants.OTP_INPUT, PhoneLoginActivity.this, first_name, middle_name, last_name, dob, "", phone, component_id,onLoginClickListenerDone).show();
 
             }
         } else {
@@ -222,42 +212,84 @@ public class PhoneLoginActivity extends AppCompatActivity implements GoogleApiCl
     }
 
 
-    private void verifyPhoneNumber() {
+    private void verifyCredential(final String type) {
+
+        String phoneforApi="";
+
+
 
         String url = AppConstants.BASE_URL + AppConstants.MULTIPLE_USAGE_PART_URL;
-        ANRequest.PostRequestBuilder postRequestBuilder;
+        final ANRequest.PostRequestBuilder postRequestBuilder;
         Priority priority;
         ANRequest anRequest;
         postRequestBuilder = new ANRequest.PostRequestBuilder(url);
         priority = Priority.MEDIUM;
-        postRequestBuilder.addBodyParameter("mode", AppConstants.PHONE_VERIFICATION_MODE);
+
+        if (type.equals("email")){
+
+            postRequestBuilder.addBodyParameter("mode", "check-email");
+            postRequestBuilder.addBodyParameter("email", email);
+
+        }
+        else if (type.equals("phone")){
+
+
+            if (phone == null || phone.length() < 3) {
+                phoneforApi = phone;
+            } else {
+                phoneforApi = phone.substring(phone.length() - 10);
+
+            }
+
+
+            Log.d("phoneforApi","---"+phoneforApi);
+            postRequestBuilder.addBodyParameter("mode", AppConstants.PHONE_VERIFICATION_MODE);
+            postRequestBuilder.addBodyParameter("phoneNo", phoneforApi);
+        }
+
+
         postRequestBuilder.setPriority(priority);
         postRequestBuilder.addHeaders("x-api-key", "123456");
-        postRequestBuilder.addBodyParameter("phoneNo", phone);
         anRequest = postRequestBuilder.build();
         anRequest.getAsJSONObject(new JSONObjectRequestListener() {
             @Override
             public void onResponse(JSONObject response) {
 //                hideLoading();
+
+                Log.d("phone_verification_rpns", ":--- " +response.toString());
                 try {
-                    Log.d("phone_verification_rpns", ": " + response.toString());
+                    if (type.equals("email")){
 
-                    if (response.getString("status").equals("1")) {
-                        middleNameTextInputLayout.setErrorEnabled(false);
+                        if (response.getString("status").equals("1")){
 
-//                        apiHitForCheckEmail();
+                            appRegestration();
+                        }
+                        else {
+
+                            email_textInput_layout.setError(getResources().getString(R.string.email_already_exists));
+                            email_edittext.requestFocus();
+//                            new EmailVerificationDialog(PhoneLoginActivity.this,email,onEmailVerificationListenerDone).show();
+                        }
 
 
-                        phone=component_id+" "+phone;
-                        Log.d("phone", ":------ " + phone);
-                        new PhoneAndLogoutDialogClass(AppConstants.OTP_INPUT, PhoneLoginActivity.this, first_name, middle_name, last_name, dob, "", phone, component_id,onLoginClickListenerDone).show();
 
-                    } else {
-                        Toast.makeText(PhoneLoginActivity.this, response.getString("message"), Toast.LENGTH_LONG).show();
-                        phoneEdittext.requestFocus();
-                        middleNameTextInputLayout.setErrorEnabled(true);
-                        middleNameTextInputLayout.setError(response.getString("message"));
                     }
+                    else if (type.equals("phone")){
+
+                        if (response.getString("status").equals("1")) {
+                            phoneno_textInput_layout.setErrorEnabled(false);
+                            isEmailCheck=false;
+                            new PhoneAndLogoutDialogClass(AppConstants.OTP_INPUT, PhoneLoginActivity.this, email, phone,onLoginClickListenerDone).show();
+
+                        } else {
+//
+                            isEmailCheck=true;
+                            new PhoneAndLogoutDialogClass(AppConstants.OTP_INPUT, PhoneLoginActivity.this, email, phone,onLoginClickListenerDone).show();
+                        }
+
+                    }
+
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -272,38 +304,6 @@ public class PhoneLoginActivity extends AppCompatActivity implements GoogleApiCl
         });
     }
 
-    private boolean checkValidation(String email, String phone, String component_id) {
-
-//        if (TextUtils.isEmpty(email.trim())) {
-//            firstNameTextInputLayout.setError(getResources().getString(R.string.email_can_not_be_blank));
-//            emailEdittext.requestFocus();
-//            return false;
-//        }
-//
-//        if (!CommonUtils.isEmailValid(email.trim())) {
-//            firstNameTextInputLayout.setError(getResources().getString(R.string.invalid_email));
-//           emailEdittext.requestFocus();
-//            return false;
-//        }
-
-        if (TextUtils.isEmpty(phone.trim())) {
-            middleNameTextInputLayout.setError(getResources().getString(R.string.phone_can_not_be_blank));
-            phoneEdittext.requestFocus();
-            return false;
-        }
-
-        if (phone.length() != 10) {
-            middleNameTextInputLayout.setError(getResources().getString(R.string.invalid_phone));
-            phoneEdittext.requestFocus();
-            return false;
-        }
-
-
-
-
-        return true;
-    }
-
 
     private void apiHitForCheckEmail() {
 
@@ -316,11 +316,9 @@ public class PhoneLoginActivity extends AppCompatActivity implements GoogleApiCl
         priority = Priority.MEDIUM;
 
         postRequestBuilder.addBodyParameter("mode", "check-email");
-//        postRequestBuilder.addBodyParameter("email", email);
-
+        postRequestBuilder.addBodyParameter("email", email);
         postRequestBuilder.setPriority(priority);
         postRequestBuilder.addHeaders("x-api-key", "123456");
-
         anRequest = postRequestBuilder.build();
         anRequest.getAsJSONObject(new JSONObjectRequestListener() {
             @Override
@@ -336,15 +334,12 @@ public class PhoneLoginActivity extends AppCompatActivity implements GoogleApiCl
                         if (status.equals("1")) {
 
 
-                            phone=component_id+" "+phone;
-                            Log.d("phone", ":------ " + phone);
-                            new PhoneAndLogoutDialogClass(AppConstants.OTP_INPUT, PhoneLoginActivity.this, first_name, middle_name, last_name, dob, "", phone, component_id).show();
                         } else {
                             if (message != null) {
                                 Toast.makeText(PhoneLoginActivity.this, message, Toast.LENGTH_LONG).show();
                             }
-//                            firstNameTextInputLayout.setError(getResources().getString(R.string.email_already_exists));
-//                            emailEdittext.requestFocus();
+                            email_textInput_layout.setError(getResources().getString(R.string.email_already_exists));
+                            email_edittext.requestFocus();
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -362,69 +357,91 @@ public class PhoneLoginActivity extends AppCompatActivity implements GoogleApiCl
     }
 
 
+    private boolean checkValidation(String value,String type) {
 
-    private void showHint() {
-        HintRequest hintRequest = new HintRequest.Builder()
-                .setHintPickerConfig(new CredentialPickerConfig.Builder()
-                        .setShowCancelButton(true)
-                        .build())
-                .setPhoneNumberIdentifierSupported(true)
-                .build();
 
-        PendingIntent intent =
-                Auth.CredentialsApi.getHintPickerIntent(mCredentialsApiClient, hintRequest);
-        try {
-            startIntentSenderForResult(intent.getIntentSender(), RC_HINT, null, 0, 0, 0);
-        } catch (IntentSender.SendIntentException e) {
+        if (TextUtils.isEmpty(value.trim())) {
+            return false;
+        }
 
+
+        return true;
+    }
+
+
+
+
+
+    private void showHint(String type) {
+
+        if (type.equals("email")){
+
+            Intent googlePicker = AccountPicker.newChooseAccountIntent(null, null, new String[]{GoogleAuthUtil.GOOGLE_ACCOUNT_TYPE}, true, null, null, null, null);
+            startActivityForResult(googlePicker, 123);
+        }
+        else if (type.equals("phone")){
+
+            HintRequest hintRequest = new HintRequest.Builder()
+                    .setHintPickerConfig(new CredentialPickerConfig.Builder()
+                            .setShowCancelButton(true)
+                            .build())
+                    .setPhoneNumberIdentifierSupported(true)
+                    .build();
+
+            PendingIntent intent =
+                    Auth.CredentialsApi.getHintPickerIntent(mCredentialsApiClient, hintRequest);
+            try {
+                startIntentSenderForResult(intent.getIntentSender(), RC_HINT, null, 0, 0, 0);
+            } catch (IntentSender.SendIntentException e) {
+
+            }
         }
     }
 
-
-    @Override
-    public void onConnected(@Nullable Bundle bundle) {
-
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-
-    }
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
-    }
 
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        mProgressDialog.hide();
+
         if (requestCode == RC_HINT) {
             if (resultCode == RESULT_OK) {
                 Credential cred = data.getParcelableExtra(Credential.EXTRA_KEY);
 
+//                Log.d("phone",cred.getId());
                 if (cred.getId().length() > 4)
                 {
-                    phoneEdittext.setText(cred.getId());
-                    phone = phoneEdittext.getText().toString().trim();
-                    new PhoneAndLogoutDialogClass(AppConstants.OTP_INPUT, PhoneLoginActivity.this, first_name, middle_name, last_name, dob, "", phone, "",onLoginClickListenerDone).show();
+                    phone_edittext.setText(cred.getId());
+                    phone = phone_edittext.getText().toString().trim();
+
+
+                    verifyCredential("phone");
+
+
                 }
                 else
                 {
-                    phoneEdittext.setText(cred.getId());
+                    phone_edittext.setText(cred.getId());
                 }
-            } else {
             }
         }
+        else if (requestCode == 123 && resultCode == RESULT_OK) {
+            String accountName = data.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
+            email_edittext.setText(""+accountName);
+            email=email_edittext.getText().toString().trim();
 
-//        if (requestCode == 123 && resultCode == RESULT_OK) {
-//            String accountName = data.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
-//            emailEdittext.setText(""+accountName);
+            verifyCredential("email");
+        }
+//        else {
 //
-//            sendEmailVerification();
+////            phone_edittext.setText("+918017749625");
+////            phone = phone_edittext.getText().toString().trim();
+////            verifyCredential("phone");
 //        }
-
+//        phone_edittext.setText("+918017749625");
+//        phone = phone_edittext.getText().toString().trim();
+//        verifyCredential("phone");
 
 //        listenerDone.onSuccess("You have been successfully authenticated");
 //        onBackPressed();
@@ -461,7 +478,7 @@ public class PhoneLoginActivity extends AppCompatActivity implements GoogleApiCl
             @Override
             public void onClick(View v) {
                 // Close dialog
-                apprequestAccepet(userNonce);
+                appRequestAccepet(userNonce);
                 dialog.dismiss();
             }
         });
@@ -470,7 +487,10 @@ public class PhoneLoginActivity extends AppCompatActivity implements GoogleApiCl
             public void onClick(View v) {
 
                 listenerDone.onError("Failed");
-                onBackPressed();
+                Intent intent=new Intent();
+                intent.putExtra("MESSAGE","Decline");
+                setResult(11,intent);
+                finish();
                 dialog.dismiss();
             }
         });
@@ -478,57 +498,6 @@ public class PhoneLoginActivity extends AppCompatActivity implements GoogleApiCl
     }
 
 
-    private void appregister() {
-
-        String url = AppConstants.BASE_URL + AppConstants.SOCIAL_USAGE_PART_URL;
-        ANRequest.PostRequestBuilder postRequestBuilder;
-        Priority priority;
-        ANRequest anRequest;
-        postRequestBuilder = new ANRequest.PostRequestBuilder(url);
-        priority = Priority.MEDIUM;
-        postRequestBuilder.addBodyParameter("mode", AppConstants.APP_VERIFICATION_MODE);
-        postRequestBuilder.setPriority(priority);
-        postRequestBuilder.addHeaders("x-api-key", "123456");
-
-
-        postRequestBuilder.addBodyParameter("appName", "run2play");
-        postRequestBuilder.addBodyParameter("accessToken", "Dvyaw9pUECWZxg32ASibMsJ6vX8NKFQKH8V572wF4mWTac0dZoLjxgVblPNoJ6zi");
-
-        anRequest = postRequestBuilder.build();
-        anRequest.getAsJSONObject(new JSONObjectRequestListener() {
-            @Override
-            public void onResponse(JSONObject response) {
-//                hideLoading();
-                try {
-                    Log.d("phone_verification_rpns", ": " + response.toString());
-
-                    if (response.getString("status").equals("1")) {
-
-                        scrollView.setVisibility(View.VISIBLE );
-                        showHint();
-
-                    } else {
-                        Toast.makeText(PhoneLoginActivity.this, response.getString("message"), Toast.LENGTH_LONG).show();
-                        onBackPressed();
-
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-                mProgressDialog.hide();
-            }
-
-            @Override
-            public void onError(ANError anError) {
-                // handle error
-//                hideLoading();
-                mProgressDialog.hide();
-                onBackPressed();
-                Log.d("phone_verification_err", ": " + anError.getMessage());
-            }
-        });
-    }
 
     private void apprequest(String uid) {
 
@@ -540,7 +509,7 @@ public class PhoneLoginActivity extends AppCompatActivity implements GoogleApiCl
         priority = Priority.MEDIUM;
         postRequestBuilder.addBodyParameter("mode", AppConstants.APP_REQUEST_MODE);
         postRequestBuilder.setPriority(priority);
-        postRequestBuilder.addHeaders("access-token", "Dvyaw9pUECWZxg32ASibMsJ6vX8NKFQKH8V572wF4mWTac0dZoLjxgVblPNoJ6zi");
+        postRequestBuilder.addHeaders("access-token", commonResponse.getAppKey());
         postRequestBuilder.addBodyParameter("uid", uid);
 
 
@@ -550,21 +519,28 @@ public class PhoneLoginActivity extends AppCompatActivity implements GoogleApiCl
             public void onResponse(JSONObject response) {
 //                hideLoading();
                 try {
-                    Log.d("phone_verification_rpns", ": " + response.toString());
+                    Log.d("Abhishek", ": ------1" + response.toString());
 
                     if (response.getString("status").equals("1")) {
 
+                        Log.d("Abhishek", ": ------2" + response.toString());
                         String userNonce=response.getJSONObject("response").getString("userNonce");
                         mProgressDialog.hide();
                         showPopup(userNonce);
 
                     } else {
+                        Log.d("Abhishek", ": ------3" + response.toString());
                         Toast.makeText(PhoneLoginActivity.this, response.getString("message"), Toast.LENGTH_LONG).show();
-                        onBackPressed();
+                        Intent intent=new Intent();
+//                        intent.putExtra("MESSAGE",response.toString());
+                        intent.putExtra("message","1234");
+                        setResult(10,intent);
+                        finish();
 
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    Log.d("Abhishek", ": ------4" + response.toString());
                 }
 
                 mProgressDialog.hide();
@@ -575,14 +551,18 @@ public class PhoneLoginActivity extends AppCompatActivity implements GoogleApiCl
                 // handle error
 //                hideLoading();
                 mProgressDialog.hide();
-                onBackPressed();
+                Log.d("Abhishek", ": ------5");
+                Intent intent=new Intent();
+                intent.putExtra("MESSAGE","Already Regestered");
+                setResult(11,intent);
+                finish();
                 Log.d("phone_verification_err", ": " + anError.getMessage());
             }
         });
     }
 
 
-    private void apprequestAccepet(String userNonce) {
+    private void appRequestAccepet(String userNonce) {
         mProgressDialog.show();
         String url = AppConstants.BASE_URL + AppConstants.SOCIAL_USAGE_PART_URL;
         ANRequest.PostRequestBuilder postRequestBuilder;
@@ -607,12 +587,18 @@ public class PhoneLoginActivity extends AppCompatActivity implements GoogleApiCl
 
                     if (response.getString("status").equals("1")) {
                         mProgressDialog.hide();
-                        listenerDone.onSuccess(response.toString());
-                        onBackPressed();
+                        Intent intent=new Intent();
+                        intent.putExtra("MESSAGE",response.toString());
+                        setResult(10,intent);
                         finish();
+
                     } else {
                         Toast.makeText(PhoneLoginActivity.this, response.getString("message"), Toast.LENGTH_LONG).show();
-                        onBackPressed();
+                        Intent intent=new Intent();
+                        intent.putExtra("MESSAGE",response.toString());
+                        setResult(11,intent);
+                        finish();
+
 
                     }
                 } catch (JSONException e) {
@@ -627,11 +613,85 @@ public class PhoneLoginActivity extends AppCompatActivity implements GoogleApiCl
                 // handle error
 //                hideLoading();
                 mProgressDialog.hide();
-                onBackPressed();
+                Toast.makeText(PhoneLoginActivity.this,"Error", Toast.LENGTH_LONG).show();
+                Intent intent=new Intent();
+                intent.putExtra("MESSAGE","1234567890");
+                setResult(11,intent);
+                finish();
                 Log.d("phone_verification_err", ": " + anError.getMessage());
             }
         });
     }
+
+
+
+    private void appRegestration() {
+        mProgressDialog.show();
+        String url = AppConstants.BASE_URL + AppConstants.MULTIPLE_USAGE_PART_URL;
+        ANRequest.PostRequestBuilder postRequestBuilder;
+        Priority priority;
+        ANRequest anRequest;
+        postRequestBuilder = new ANRequest.PostRequestBuilder(url);
+        priority = Priority.MEDIUM;
+        postRequestBuilder.addBodyParameter("mode", AppConstants.SIGNUP_MODE);
+        postRequestBuilder.setPriority(priority);
+
+        postRequestBuilder.addHeaders("x-api-key", "123456");
+        postRequestBuilder.addBodyParameter("email", email);
+        postRequestBuilder.addBodyParameter("phoneNo", phone);
+        postRequestBuilder.addBodyParameter("password", FirebaseAuth.getInstance().getCurrentUser().getUid());
+
+        anRequest = postRequestBuilder.build();
+        anRequest.getAsJSONObject(new JSONObjectRequestListener() {
+            @Override
+            public void onResponse(JSONObject response) {
+//                hideLoading();
+                try {
+                    Log.d("phone_verification_rpns", ": " + response.toString());
+
+                    commonResponse = new Gson().fromJson(response.getJSONObject("response").toString(), Response.class);
+                    if (response.getString("status").equals("1")) {
+                        mProgressDialog.hide();
+                        new EmailVerificationDialog(PhoneLoginActivity.this,email,onEmailVerificationListenerDone).show();
+                    } else {
+                        Toast.makeText(PhoneLoginActivity.this, response.getString("message"), Toast.LENGTH_LONG).show();
+
+
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                mProgressDialog.hide();
+            }
+
+            @Override
+            public void onError(ANError anError) {
+                // handle error
+//                hideLoading();
+                mProgressDialog.hide();
+
+                Log.d("phone_verification_err", ": " + anError.getMessage());
+            }
+        });
+    }
+
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+
 
 
 }

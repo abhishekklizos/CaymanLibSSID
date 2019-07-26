@@ -3,7 +3,6 @@ package cyman.libssid.dialog;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -16,10 +15,7 @@ import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
-
-
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseException;
@@ -27,13 +23,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
-
 import java.util.concurrent.TimeUnit;
-
 import cyman.libssid.R;
-import cyman.libssid.activity.LoginActivity;
-import cyman.libssid.activity.SignUpStepOneActivity;
-import cyman.libssid.activity.SignUpStepTwoActivity;
 import cyman.libssid.util.AppConstants;
 import cyman.libssid.util.PinEntryEditText;
 import cyman.libssid.util.avloaderindicator.AVLoadingIndicatorView;
@@ -88,6 +79,17 @@ public class PhoneAndLogoutDialogClass extends Dialog implements View.OnClickLis
         this.email = email;
         this.component_id = component_id;
 
+        Log.d("phone","----------"+phone);
+    }
+
+    public PhoneAndLogoutDialogClass(String type, Activity a, String email, String phone,OnLoginVerificationListenerDone onLoginVerificationListener) {
+        super(a);
+        // TODO Auto-generated constructor stub
+        this.type = type;
+        this.activity = a;
+        this.phone = phone;
+        this.email = email;
+        this.onLoginVerificationListenerDone=onLoginVerificationListener;
         Log.d("phone","----------"+phone);
     }
 
