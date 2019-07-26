@@ -305,66 +305,65 @@ public class PhoneLoginActivity extends AppCompatActivity implements GoogleApiCl
     }
 
 
-//    private void apiHitForCheckEmail() {
-//
-//        String url = AppConstants.BASE_URL + AppConstants.MULTIPLE_USAGE_PART_URL;
-//        ANRequest.PostRequestBuilder postRequestBuilder;
-//        Priority priority;
-//        ANRequest anRequest;
-//
-//        postRequestBuilder = new ANRequest.PostRequestBuilder(url);
-//        priority = Priority.MEDIUM;
-//
-//        postRequestBuilder.addBodyParameter("mode", "check-email");
-////        postRequestBuilder.addBodyParameter("email", email);
-//
-//        postRequestBuilder.setPriority(priority);
-//        postRequestBuilder.addHeaders("x-api-key", "123456");
-//
-//        anRequest = postRequestBuilder.build();
-//        anRequest.getAsJSONObject(new JSONObjectRequestListener() {
-//            @Override
-//            public void onResponse(JSONObject response) {
-//                Log.d("check_reponse_chk_email", ": " + response.toString());
-//
-//                if (response != null) {
-//                    String message, status;
-//                    try {
-//                        message = response.getString("message");
-//                        status = response.getString("status");
-//
-//                        if (status.equals("1")) {
-//
-//
-//                            phone=component_id+" "+phone;
-//                            Log.d("phone", ":------ " + phone);
-//                            new PhoneAndLogoutDialogClass(AppConstants.OTP_INPUT, PhoneLoginActivity.this, first_name, middle_name, last_name, dob, "", phone, component_id).show();
-//                        } else {
-//                            if (message != null) {
-//                                Toast.makeText(PhoneLoginActivity.this, message, Toast.LENGTH_LONG).show();
-//                            }
-////                            firstNameTextInputLayout.setError(getResources().getString(R.string.email_already_exists));
-////                            emailEdittext.requestFocus();
-//                        }
-//                    } catch (JSONException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//            }
-//
-//            @Override
-//            public void onError(ANError anError) {
-//
-//                Toast.makeText(PhoneLoginActivity.this, anError.getMessage(), Toast.LENGTH_LONG).show();
-//                Log.d("error_change_pass", ": " + anError.getMessage());
-//            }
-//        });
-//    }
+    private void apiHitForCheckEmail() {
+
+        String url = AppConstants.BASE_URL + AppConstants.MULTIPLE_USAGE_PART_URL;
+        ANRequest.PostRequestBuilder postRequestBuilder;
+        Priority priority;
+        ANRequest anRequest;
+
+        postRequestBuilder = new ANRequest.PostRequestBuilder(url);
+        priority = Priority.MEDIUM;
+
+        postRequestBuilder.addBodyParameter("mode", "check-email");
+//        postRequestBuilder.addBodyParameter("email", email);
+
+        postRequestBuilder.setPriority(priority);
+        postRequestBuilder.addHeaders("x-api-key", "123456");
+
+        anRequest = postRequestBuilder.build();
+        anRequest.getAsJSONObject(new JSONObjectRequestListener() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.d("check_reponse_chk_email", ": " + response.toString());
+
+                if (response != null) {
+                    String message, status;
+                    try {
+                        message = response.getString("message");
+                        status = response.getString("status");
+
+                        if (status.equals("1")) {
+
+
+                            phone=component_id+" "+phone;
+                            Log.d("phone", ":------ " + phone);
+                            new PhoneAndLogoutDialogClass(AppConstants.OTP_INPUT, PhoneLoginActivity.this, first_name, middle_name, last_name, dob, "", phone, component_id).show();
+                        } else {
+                            if (message != null) {
+                                Toast.makeText(PhoneLoginActivity.this, message, Toast.LENGTH_LONG).show();
+                            }
+//                            firstNameTextInputLayout.setError(getResources().getString(R.string.email_already_exists));
+//                            emailEdittext.requestFocus();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onError(ANError anError) {
+
+                Toast.makeText(PhoneLoginActivity.this, anError.getMessage(), Toast.LENGTH_LONG).show();
+                Log.d("error_change_pass", ": " + anError.getMessage());
+            }
+        });
+    }
 
 
 
     private void showHint() {
-//        ui.clearKeyboard();
         HintRequest hintRequest = new HintRequest.Builder()
                 .setHintPickerConfig(new CredentialPickerConfig.Builder()
                         .setShowCancelButton(true)
@@ -377,24 +376,24 @@ public class PhoneLoginActivity extends AppCompatActivity implements GoogleApiCl
         try {
             startIntentSenderForResult(intent.getIntentSender(), RC_HINT, null, 0, 0, 0);
         } catch (IntentSender.SendIntentException e) {
-            Log.e("Abhi", "Could not start hint picker Intent", e);
+
         }
     }
 
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-        Log.d("Abhi", "Connected");
+
     }
 
     @Override
     public void onConnectionSuspended(int i) {
-        Log.d("Abhi", "GoogleApiClient is suspended with cause code: " + i);
+
     }
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Log.d("Abhi", "GoogleApiClient failed to connect: " + connectionResult);
+
     }
 
 
@@ -407,25 +406,15 @@ public class PhoneLoginActivity extends AppCompatActivity implements GoogleApiCl
 
                 if (cred.getId().length() > 4)
                 {
-//                    lastFourDigits = cred.getId().substring(cred.getId().length() - 10);
-//                    phoneEdittext.setText(cred.getId().substring(cred.getId().length() - 10));
                     phoneEdittext.setText(cred.getId());
-
                     phone = phoneEdittext.getText().toString().trim();
-//                    component_id = componentIdEdittext.getText().toString().trim();
-//                    phone=component_id+" "+phone;
-                    Log.d("phone", ":------ " + phone);
                     new PhoneAndLogoutDialogClass(AppConstants.OTP_INPUT, PhoneLoginActivity.this, first_name, middle_name, last_name, dob, "", phone, "",onLoginClickListenerDone).show();
-
                 }
                 else
                 {
-//                    lastFourDigits = cred.getId();
                     phoneEdittext.setText(cred.getId());
                 }
-//                phoneEdittext.setText(cred.getId());
             } else {
-//                ui.focusPhoneNumber();
             }
         }
 
@@ -459,7 +448,34 @@ public class PhoneLoginActivity extends AppCompatActivity implements GoogleApiCl
         // [END send_email_verification]
     }
 
+    public void showPopup(final String userNonce){
 
+        final Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.dialog);
+        dialog.setTitle("Custom Dialog");
+        dialog.show();
+        Button declineButton = (Button) dialog.findViewById(R.id.textView5);
+        Button acceptButton = (Button) dialog.findViewById(R.id.button);
+
+        acceptButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Close dialog
+                apprequestAccepet(userNonce);
+                dialog.dismiss();
+            }
+        });
+        declineButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                listenerDone.onError("Failed");
+                onBackPressed();
+                dialog.dismiss();
+            }
+        });
+
+    }
 
 
     private void appregister() {
@@ -514,7 +530,6 @@ public class PhoneLoginActivity extends AppCompatActivity implements GoogleApiCl
         });
     }
 
-
     private void apprequest(String uid) {
 
         String url = AppConstants.BASE_URL + AppConstants.SOCIAL_USAGE_PART_URL;
@@ -565,45 +580,6 @@ public class PhoneLoginActivity extends AppCompatActivity implements GoogleApiCl
             }
         });
     }
-
-
-
-    public void showPopup(final String userNonce){
-
-        final Dialog dialog = new Dialog(this);
-        // Include dialog.xml file
-        dialog.setContentView(R.layout.dialog);
-        // Set dialog title
-        dialog.setTitle("Custom Dialog");
-
-        // set values for custom dialog components - text, image and button
-
-        dialog.show();
-
-        Button declineButton = (Button) dialog.findViewById(R.id.textView5);
-        Button acceptButton = (Button) dialog.findViewById(R.id.button);
-
-        // if decline button is clicked, close the custom dialog
-        acceptButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Close dialog
-                apprequestAccepet(userNonce);
-                dialog.dismiss();
-            }
-        });
-        declineButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                listenerDone.onError("Failed");
-                onBackPressed();
-                dialog.dismiss();
-            }
-        });
-
-    }
-
 
 
     private void apprequestAccepet(String userNonce) {

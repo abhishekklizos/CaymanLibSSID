@@ -137,8 +137,6 @@ public class LoginActivity extends AppCompatActivity {
         listenerDone.onSuccess("You have been successfully authenticated");
         onBackPressed();
         finish();
-
-
     }
 
 }
