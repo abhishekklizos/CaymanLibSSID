@@ -266,8 +266,9 @@ public class PhoneLoginActivity extends AppCompatActivity implements GoogleApiCl
                         }
                         else {
 
-                            email_textInput_layout.setError(getResources().getString(R.string.email_already_exists));
-                            email_edittext.requestFocus();
+//                            email_textInput_layout.setError(getResources().getString(R.string.email_already_exists));
+//                            email_edittext.requestFocus();
+                            apprequest(FirebaseAuth.getInstance().getUid());
 //                            new EmailVerificationDialog(PhoneLoginActivity.this,email,onEmailVerificationListenerDone).show();
                         }
 
@@ -511,8 +512,6 @@ public class PhoneLoginActivity extends AppCompatActivity implements GoogleApiCl
         postRequestBuilder.setPriority(priority);
         postRequestBuilder.addHeaders("access-token", commonResponse.getAppKey());
         postRequestBuilder.addBodyParameter("uid", uid);
-
-
         anRequest = postRequestBuilder.build();
         anRequest.getAsJSONObject(new JSONObjectRequestListener() {
             @Override

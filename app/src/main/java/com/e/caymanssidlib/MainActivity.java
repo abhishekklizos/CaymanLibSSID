@@ -1,9 +1,11 @@
 package com.e.caymanssidlib;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
@@ -32,8 +34,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                LoginActivity.LoginManagerConnect(MainActivity.this,"Dvyaw9pUECWZxg32ASibMsJ6vX8NKFQKH8V572wF4mWTac0dZoLjxgVblPNoJ6zi",onLoginClickListenerDone);
+//                LoginActivity.LoginManagerConnect(MainActivity.this,"Dvyaw9pUECWZxg32ASibMsJ6vX8NKFQKH8V572wF4mWTac0dZoLjxgVblPNoJ6zi",onLoginClickListenerDone);
 //                onCallBackFunction.LoginManager(MainActivity.this,"",onLoginClickListener);
+                startActivityForResult(new Intent(MainActivity.this,LoginActivity.class),2);
 
             }
         });
@@ -58,5 +61,13 @@ public class MainActivity extends AppCompatActivity {
         };
 
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        Log.d("requestCode","-------1---5------"+requestCode);
+        Log.d("requestCode","------2-----5------"+resultCode);
     }
 }

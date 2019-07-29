@@ -40,7 +40,7 @@ public class LoginActivity extends AppCompatActivity {
     TextView tv_login;
     static String appKey="";
 
-    static ProgressDialog mProgressDialog;
+    ProgressDialog mProgressDialog;
 
     static OnLoginClickListenerDone listenerDone;
 
@@ -51,14 +51,73 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-    public static void LoginManagerConnect(final Activity context, String packg, OnLoginClickListenerDone clickListener){
-        listenerDone=clickListener;
-        appKey=packg;
+//    public  void LoginManagerConnect(String packg, OnLoginClickListenerDone clickListener){
+//        listenerDone=clickListener;
+//        appKey=packg;
+//        mProgressDialog = CommonUtils.showLoadingDialog(this);
+//        mProgressDialog.show();
+//
+//        String url = AppConstants.BASE_URL + AppConstants.SOCIAL_USAGE_PART_URL;
+//        ANRequest.PostRequestBuilder postRequestBuilder;
+//        Priority priority;
+//        ANRequest anRequest;
+//        postRequestBuilder = new ANRequest.PostRequestBuilder(url);
+//        priority = Priority.HIGH;
+//        postRequestBuilder.addBodyParameter("mode", AppConstants.APP_VERIFICATION_MODE);
+//        postRequestBuilder.setPriority(priority);
+//        postRequestBuilder.addHeaders("x-api-key", "123456");
+//        postRequestBuilder.addBodyParameter("appName", "run2play");
+//        postRequestBuilder.addBodyParameter("accessToken", packg);
+//
+//        anRequest = postRequestBuilder.build();
+//        anRequest.getAsJSONObject(new JSONObjectRequestListener() {
+//            @Override
+//            public void onResponse(JSONObject response) {
+//
+//                CommonResponse commonResponse = new Gson().fromJson(response.toString(), CommonResponse.class);
+////                hideLoading();
+//                Log.d("phone_verification_rpns", ": " + response.toString());
+//
+//                if (commonResponse.getStatus().equals("1")) {
+//
+//                    mProgressDialog.hide();
+//                    commonResponse.getResponse().setAppKey(appKey);
+//                    Intent intent=new Intent(LoginActivity.this,PhoneLoginActivity.class);
+//                    intent.putExtra("response",commonResponse.getResponse());
+//                    startActivityForResult(intent,10);
+//
+//                } else {
+//                    listenerDone.onSuccess("Not a Valid Key");
+////                    context.onBackPressed();
+////                    context.finish();
+//                    Log.d("phone_verification_rpns", ": 123" );
+//                    mProgressDialog.hide();
+//                }
+//
+//
+//            }
+//
+//            @Override
+//            public void onError(ANError anError) {
+//                // handle error
+////                hideLoading();
+//                mProgressDialog.hide();
+//                listenerDone.onSuccess("Not a Valid Key");
+////                context.onBackPressed();
+////                context.finish();
+//                Log.d("phone_verification_rpns", ": 213" );
+//                Log.d("phone_verification_err", ": " + anError.getMessage());
+//            }
+//        });
+//
+//
+//
+//
+//    }
 
-        mProgressDialog = CommonUtils.showLoadingDialog(context);
 
-        mProgressDialog.show();
 
+    public  void LoginManagerConnect(){
         String url = AppConstants.BASE_URL + AppConstants.SOCIAL_USAGE_PART_URL;
         ANRequest.PostRequestBuilder postRequestBuilder;
         Priority priority;
@@ -68,10 +127,8 @@ public class LoginActivity extends AppCompatActivity {
         postRequestBuilder.addBodyParameter("mode", AppConstants.APP_VERIFICATION_MODE);
         postRequestBuilder.setPriority(priority);
         postRequestBuilder.addHeaders("x-api-key", "123456");
-
-
         postRequestBuilder.addBodyParameter("appName", "run2play");
-        postRequestBuilder.addBodyParameter("accessToken", packg);
+        postRequestBuilder.addBodyParameter("accessToken", "Dvyaw9pUECWZxg32ASibMsJ6vX8NKFQKH8V572wF4mWTac0dZoLjxgVblPNoJ6zi");
 
         anRequest = postRequestBuilder.build();
         anRequest.getAsJSONObject(new JSONObjectRequestListener() {
@@ -86,9 +143,9 @@ public class LoginActivity extends AppCompatActivity {
 
                     mProgressDialog.hide();
                     commonResponse.getResponse().setAppKey(appKey);
-                    Intent intent=new Intent(context,PhoneLoginActivity.class);
+                    Intent intent=new Intent(LoginActivity.this,PhoneLoginActivity.class);
                     intent.putExtra("response",commonResponse.getResponse());
-                    context.startActivityForResult(intent,10);
+                    startActivityForResult(intent,10);
 
                 } else {
                     listenerDone.onSuccess("Not a Valid Key");
@@ -118,8 +175,6 @@ public class LoginActivity extends AppCompatActivity {
 
 
     }
-
-
 
 
     @SuppressLint("MissingPermission")
@@ -165,36 +220,16 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        LoginManagerConnect();
     }
 
-//    private boolean isVarified() {
-//
-//        if (email_edittext.getText().toString()!=null && email_edittext.getText().toString().length()>0)
-//        {
-//            if (password_edittext.getText().toString()!=null && password_edittext.getText().toString().length()>0)
-//            {
-//                return true;
-//            }
-//            else {
-//                password_edittext.setError(getString(R.string.password_can_not_be_blank));
-//                return false;
-//            }
-//
-//        }
-//        else {
-//
-//            email_textInput_layout.setError(getString(R.string.email_can_not_be_blank));
-//            return false;
-//        }
-//
-//    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        Log.d("requestCode","-------1---5------"+requestCode);
-        Log.d("requestCode","------2-----5------"+resultCode);
+        Log.d("requestCode","----LoginActivity---1---------"+requestCode);
+        Log.d("requestCode","---LoginActivity---2-----------"+resultCode);
 //        Log.d("requestCode","------2--5---------"+data.getExtras().getString("Key"));
 
 
@@ -216,63 +251,15 @@ public class LoginActivity extends AppCompatActivity {
 //        listenerDone.onSuccess("You have been successfully authenticated");
 //        onBackPressed();
 //        finish();
+
+
+        Intent intent=new Intent();
+        intent.putExtra("MESSAGE","Decline");
+        setResult(1010,intent);
+        finish();
     }
 
 
-
-//    private static Boolean appRegister(Activity activity) {
-//
-//        String url = AppConstants.BASE_URL + AppConstants.SOCIAL_USAGE_PART_URL;
-//        ANRequest.PostRequestBuilder postRequestBuilder;
-//        Priority priority;
-//        ANRequest anRequest;
-//        postRequestBuilder = new ANRequest.PostRequestBuilder(url);
-//        priority = Priority.HIGH;
-//        postRequestBuilder.addBodyParameter("mode", AppConstants.APP_VERIFICATION_MODE);
-//        postRequestBuilder.setPriority(priority);
-//        postRequestBuilder.addHeaders("x-api-key", "123456");
-//
-//
-//        postRequestBuilder.addBodyParameter("appName", "run2play");
-//        postRequestBuilder.addBodyParameter("accessToken", "Dvyaw9pUECWZxg32ASibMsJ6vX8NKFQKH8V572wF4mWTac0dZoLjxgVblPNoJ6zi");
-//
-//        anRequest = postRequestBuilder.build();
-//        anRequest.getAsJSONObject(new JSONObjectRequestListener() {
-//            @Override
-//            public void onResponse(JSONObject response) {
-//
-//                CommonResponse commonResponse = new Gson().fromJson(response.toString(), CommonResponse.class);
-////                hideLoading();
-//                Log.d("phone_verification_rpns", ": " + response.toString());
-//
-//                if (commonResponse.getStatus().equals("1")) {
-//                    verified=true;
-//
-//                    Log.d("phone_verification_rpns", ": 321" );
-//                    mProgressDialog.hide();
-//
-//                } else {
-//                    verified=false;
-//                    Log.d("phone_verification_rpns", ": 123" );
-//                    mProgressDialog.hide();
-//                }
-//
-//
-//            }
-//
-//            @Override
-//            public void onError(ANError anError) {
-//                // handle error
-////                hideLoading();
-//                mProgressDialog.hide();
-//                verified=false;
-//                Log.d("phone_verification_rpns", ": 213" );
-//                Log.d("phone_verification_err", ": " + anError.getMessage());
-//            }
-//        });
-//
-//        return verified;
-//    }
 
 
 }
